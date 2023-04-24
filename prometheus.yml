@@ -1,0 +1,51 @@
+# # Target is prometheus itself
+# global:
+#   scrape_interval: 15s
+#   external_labels:
+#     monitor: 'prometheus'
+# scrape_configs:
+#   - job_name: 'prometheus'
+#     static_configs:
+#       - targets: ['localhost:9090']
+
+# Target is a ec2 insatance
+global:
+  scrape_interval: 15s
+  external_labels:
+    monitor: 'prometheus'
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['<IP-of-your-NodeExporter-Instance>']
+    
+# Service Discovery - Prometheus automatically identifies all the ec2 instance in a region
+global:
+  scrape_interval: 1s
+  evaluation_interval: 1s
+
+scrape_configs:
+  - job_name: 'node'
+    ec2_sd_configs:
+      - region: ap-south-1
+        access_key: PUT_THE_ACCESS_KEY_HERE
+        secret_key: PUT_THE_SECRET_KEY_HERE
+        port: 9100
+        refresh_interval: 24h
+
+#ARN
+global:
+  scrape_interval: 1s
+  evaluation_interval: 1s
+  
+scrape_configs:
+  - job_name: 'node'
+    ec2_sd_configs:
+      - region: ap-south-1
+        profile: PUT_THE_ARN
+        port: 9100
+        refresh_interval: 24h
+
+
+
+
+
